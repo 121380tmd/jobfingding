@@ -12,7 +12,7 @@
   <div class="login-container">
     <div class="login-container-lift">
       <div class="login-container-lift-image">
-        <img src="../assets/images/37.png">
+        <img src="../assets/images/37.png" />
       </div>
     </div>
     <div class="login-container-right">
@@ -21,126 +21,148 @@
         <div class="LoginCard-inputBar">
           <div class="LoginCard-title-inputBar">
             <div class="inputBar-icon">
-              <a-icon style="fontSize:24px" type="user" />
+              <a-icon style="fontsize: 24px" type="user" />
             </div>
             <div class="inputBar-input">
-              <input type="text" placeholder="请输入系统用户名" v-model="form.userAccount">
+              <input
+                type="text"
+                placeholder="请输入系统用户名"
+                v-model="form.userAccount"
+              />
             </div>
           </div>
           <div class="LoginCard-title-inputBar">
             <div class="inputBar-icon">
-              <a-icon style="fontSize:24px" type="lock" />
+              <a-icon style="fontsize: 24px" type="lock" />
             </div>
             <div class="inputBar-input">
-              <input type="password"  placeholder="请输入密码" v-model="form.password">
+              <input
+                type="password"
+                placeholder="请输入密码"
+                v-model="form.password"
+              />
             </div>
           </div>
           <div class="LoginCard-title-verify">
             <div class="LoginCard-verify">
               <div class="inputBar-verify-icon">
-                <a-icon style="fontSize:24px" type="safety" />
+                <a-icon style="fontsize: 24px" type="safety" />
               </div>
               <div class="inputBar-verify-input">
-                <input type="text" placeholder="请输入验证码" v-model="form.captchCode">
+                <input
+                  type="text"
+                  placeholder="请输入验证码"
+                  v-model="form.captchCode"
+                />
               </div>
             </div>
-            <div class="inputBar-verify-code" @click="getCode">
-              <img :src="imageUrl">
-            </div>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="点击更换验证码"
+              placement="top"
+            >
+              <div class="inputBar-verify-code" @click="getCode">
+                <img :src="imageUrl" />
+              </div>
+            </el-tooltip>
+
             <!-- <div class="inputBar-verify-code"></div> -->
           </div>
           <div class="LoginCard-title-button" @click="login">登录</div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import store from "@/store"
-import api from "@/api"
+import store from "@/store";
+import api from "@/api";
 import { Message } from "ant-design-vue";
 export default {
   name: "Index",
   layout: "layout-blank",
   beforeRouteEnter(to, from, next) {
-    const logged = store.getters.logged
+    const logged = store.getters.logged;
     // console.log("123"+logged)
     if (logged) {
-      next({ name: "admin", query: { redirect: to.fullPath }})
+      next({ name: "admin", query: { redirect: to.fullPath } });
     }
-    next()
+    next();
   },
   data() {
     return {
-      imageUrl: '',
+      imageUrl: "",
       ImgObj: [],
       form: {
-        "captchCode": "",
-        "captchId": "",
-        "password": "", // TODO: 方便调试使用
-        "userAccount": "",
+        captchCode: "",
+        captchId: "",
+        password: "", // TODO: 方便调试使用
+        userAccount: "",
       },
-      rules: {
-
-      },
+      rules: {},
       loading: false,
-    }
+    };
   },
   mounted() {
-    this.getCode()
+    this.getCode();
   },
   methods: {
     getCode() {
       api.getCode().then((res) => {
-        this.imageUrl = res.data.image
-        this.form.captchId = res.data.captchaId
-      })
+        this.imageUrl = res.data.image;
+        this.form.captchId = res.data.captchaId;
+      });
     },
     login() {
-      if (this.form.userAccount != '') {
-        if (this.form.password != '') {
+      if (this.form.userAccount != "") {
+        if (this.form.password != "") {
           if (this.form.captchCode != "") {
-            api.login(this.form).then((res) => {
-              if (res.code == 200) {
-                this.$message.success(res.msg)
-                this.$store.commit("setUserInfo", res.data)
-                // this.$router.push("/admin")
-                this.loginSuccessRedirect()
-              }
-            }).catch((err) => {
-              this.$message.error(err.msg)
-            })
+            api
+              .login(this.form)
+              .then((res) => {
+                if (res.code == 200) {
+                  this.$message.success(res.msg);
+                  this.$store.commit("setUserInfo", res.data);
+                  // this.$router.push("/admin")
+                  this.loginSuccessRedirect();
+                }
+              })
+              .catch((err) => {
+                this.$message.error(err.msg);
+                this.getCode();
+                this.form.captchCode = "";
+              });
           } else {
-            this.$message.warning("请输入验证码")
+            this.$message.warning("请输入验证码");
           }
         } else {
-          this.$message.warning("请输入密码")
+          this.$message.warning("请输入密码");
         }
       } else {
-        this.$message.warning("请输入账号")
+        this.$message.warning("请输入账号");
       }
     },
     // 登录成功后跳转到登录前路由
     loginSuccessRedirect() {
-      const redirect = this.$route.query.redirect
+      const redirect = this.$route.query.redirect;
       // console.log(redirect)
       if (redirect) {
-        this.$router.push(redirect)
+        this.$router.push(redirect);
       } else {
-        this.$router.push("/admin")
+        this.$router.push("/admin");
       }
     },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>
 .login-container {
   width: 100vw;
   height: 100vh;
-  background: #F5F5F5;
+  background: #f5f5f5;
   display: flex;
   align-items: center;
 

@@ -1,7 +1,7 @@
 <route>
     {
       "meta": {
-        "title": "职业信息"
+        "title": "职业管理"
       }
     }
     </route>

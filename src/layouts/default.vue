@@ -4,9 +4,9 @@
       collapsible>
       <!-- 123123 -->
       <div class="logo">
-        <img src="../assets/images/logo.png" alt="" width="20px" height="24px">
+        <img src="../assets/images/logo.png" alt="" width="50px" height="50px">
         {{ logoText }}
-      </div>
+      </div><br><br>
 
       <layout-side-menu></layout-side-menu>
     </a-layout-sider>

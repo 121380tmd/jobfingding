@@ -3,7 +3,7 @@
       "name": "用户信息",
       "meta": {
         "requiresAuth": true,
-        "invisible": true,
+        "invisible": false,
         "icon": "home"
       }
 }

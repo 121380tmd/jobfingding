@@ -10,7 +10,10 @@
 </route>
    
 <template>
-  <div class="fill">
+  <div class="fill" v-if="this.errCode == 401">
+    <el-empty description="暂无权限"></el-empty>
+  </div>
+  <div class="fill" v-else>
     <div class="header">
       <div class="box-1">
         <el-button type="primary" @click="add">添加</el-button>
@@ -84,7 +87,12 @@
         :total="dataTotal"
       >
       </el-pagination>
-      <a-modal v-model:visible="visible" title="重置密码" @ok="handleOk" centered="true">
+      <a-modal
+        v-model:visible="visible"
+        title="重置密码"
+        @ok="handleOk"
+        centered="true"
+      >
         <p>您确定要重置密码吗？</p>
         <p style="font-size: 0.4rem; color: red">密码为手机号后六位</p>
       </a-modal>
@@ -122,6 +130,7 @@ export default {
       userId2: "",
       visible2: false,
       disableInf: "",
+      errCode: "",
     };
   },
   methods: {
@@ -222,12 +231,17 @@ export default {
         pageNum: this.currentPage, //第一页
         pageSize: this.pageSize, //五条数据
       };
-      api.getList(form).then((res) => {
-        // console.log(res);
-        this.dataTotal = res.data.total;
-        // console.log("total", this.dataTotal);
-        this.dataList = res.data.list;
-      });
+      api
+        .getList(form)
+        .then((res) => {
+          // console.log(res);
+          this.dataTotal = res.data.total;
+          // console.log("total", this.dataTotal);
+          this.dataList = res.data.list;
+        })
+        .catch((err) => {
+          this.errCode = err.code;
+        });
     },
   },
   //   resetPassWord

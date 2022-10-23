@@ -9,7 +9,10 @@
     }
     </route>
 <template>
-  <div class="fill">
+  <div class="fill" v-if="this.errCode == 401">
+    <el-empty description="暂无权限"></el-empty>
+  </div>
+  <div class="fill" v-else>
     <div class="header">
       <div class="box-1">
         <el-button type="info" @click="recycleMany()">批量回收</el-button>
@@ -88,6 +91,7 @@ export default {
       searchIpt: "",
       dataTotal: 0,
       dataList: [],
+      errCode: "",
     };
   },
   methods: {
@@ -132,13 +136,18 @@ export default {
         pageNum: this.currentPage, //第一页
         pageSize: this.pageSize, //五条数据
       };
-      api.getrecall(form).then((res) => {
-        console.log(res);
-        console.log(res.data);
-        this.dataTotal = parseInt(res.data.total);
-        console.log("total", this.dataTotal);
-        this.dataList = res.data.list;
-      });
+      api
+        .getrecall(form)
+        .then((res) => {
+          console.log(res);
+          console.log(res.data);
+          this.dataTotal = parseInt(res.data.total);
+          console.log("total", this.dataTotal);
+          this.dataList = res.data.list;
+        })
+        .catch((err) => {
+          this.errCode = err.code;
+        });
     },
     add() {
       this.$router.push("./add");

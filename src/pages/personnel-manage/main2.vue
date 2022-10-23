@@ -10,7 +10,10 @@
 </route>
    
 <template>
-  <div class="fill">
+  <div class="fill" v-if="this.errCode == 401">
+    <el-empty description="暂无权限"></el-empty>
+  </div>
+  <div class="fill" v-else>
     <div class="header">
       <div class="box-1">
         <el-button
@@ -58,7 +61,7 @@
           }}</template>
         </el-table-column> -->
         <el-table-column prop="create_time" label="创建时间"> </el-table-column>
-        <el-table-column label="操作" >
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -100,6 +103,7 @@ export default {
       searchIpt: "",
       dataTotal: 0,
       dataList: [],
+      errCode: "",
     };
   },
   methods: {
@@ -144,13 +148,18 @@ export default {
         pageNum: this.currentPage, //第一页
         pageSize: this.pageSize, //五条数据
       };
-      api.getClassFyList(form).then((res) => {
-        // console.log(res);
-        // console.log(res.data);
-        this.dataTotal = parseInt(res.data.total);
-        // console.log("total", this.dataTotal);
-        this.dataList = res.data.list;
-      });
+      api
+        .getClassFyList(form)
+        .then((res) => {
+          // console.log(res);
+          // console.log(res.data);
+          this.dataTotal = parseInt(res.data.total);
+          // console.log("total", this.dataTotal);
+          this.dataList = res.data.list;
+        })
+        .catch((err) => {
+          this.errCode = err.code;
+        });
     },
     add() {
       this.$router.push("./add");

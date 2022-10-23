@@ -59,7 +59,7 @@ import {
 } from "ant-design-vue" // 按需引入 ant-design-vue 组件
 
 
-import { Step, Steps, Table, Button, Tag } from 'element-ui';
+import { Step, Steps, Table, Button, Tag, Empty, Tooltip } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 // svg-icon
@@ -68,6 +68,8 @@ import "@/icons"
 import router from "./router"
 import store from "./store"
 
+Vue.use(Tooltip)
+Vue.use(Empty)
 Vue.use(Tag)
 Vue.use(AButton)
 Vue.use(Field)

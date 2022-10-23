@@ -10,7 +10,10 @@
 </route>
     
 <template>
-  <div class="main">
+  <div class="main" v-if="this.errCode == 401">
+    <el-empty description="暂无权限"></el-empty>
+  </div>
+  <div class="main" v-else>
     <div class="header">
       <div class="box-1">
         <div class="input-box">
@@ -127,6 +130,7 @@ export default {
       searchIpt: "",
       dataTotal: 0,
       dataList: [],
+      errCode: "",
     };
   },
   methods: {
@@ -144,9 +148,9 @@ export default {
       // console.log(val)
     },
     handleSizeChange(val) {
-    //   console.log(`每页 ${val} 条`);
+      //   console.log(`每页 ${val} 条`);
       this.pageSize = val;
-    //   console.log(`每页 ${val} 条`);
+      //   console.log(`每页 ${val} 条`);
       let form = {
         pageNum: this.currentPage, //第几页
         pageSize: val, //几条数据
@@ -184,10 +188,10 @@ export default {
       //     name:'add'
       // })
       this.$router.push("./b-add");
-    //   console.log("add");
+      //   console.log("add");
     },
     handleEdit(index, row) {
-    //   console.log(index, row);
+      //   console.log(index, row);
       this.$router.push({
         path: "./updatyeCommubity",
         query: row,
@@ -227,21 +231,28 @@ export default {
         pageNum: this.currentPage, //第一页
         pageSize: this.pageSize, //五条数据
       };
-      api.getCLista(form).then((res) => {
-        // console.log(res);
-        // console.log(res.data);
-        this.dataTotal = parseInt(res.data.total);
-        // console.log("total", this.dataTotal);
-        this.dataList = res.data.list;
-      });
+      api
+        .getCLista(form)
+        .then((res) => {
+          // console.log(res);
+          // console.log(res.data);
+          this.dataTotal = parseInt(res.data.total);
+          // console.log("total", this.dataTotal);
+          this.dataList = res.data.list;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.errCode = err.code;
+          //   console.log(this.errCode)
+        });
     },
     delMany() {
-    //   console.log(this.multipleSelection);
+      //   console.log(this.multipleSelection);
       let form = [];
       this.multipleSelection.forEach((item, index) => {
         form.push(item.id);
       });
-    //   console.log(form);
+      //   console.log(form);
       let _self = this;
 
       Modal.confirm({
@@ -266,7 +277,7 @@ export default {
       });
     },
     search() {
-    //   console.log("search");
+      //   console.log("search");
       let form = {
         pageNum: this.currentPage,
         pageSize: this.pageSize,
