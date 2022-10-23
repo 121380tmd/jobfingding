@@ -124,6 +124,11 @@ export default {
     method: METHOD.POST,
     url: "/api/manager/job/add"
   },
+  //添加职业信息
+  addJobClassfy: {
+    method: METHOD.POST,
+    url: "/api/manager/job/addJobClassfy"
+  },
   //获取职业信息分类
   getClassFyList: {
     method: METHOD.GET,

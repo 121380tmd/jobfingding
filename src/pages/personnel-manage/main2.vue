@@ -162,7 +162,7 @@ export default {
         });
     },
     add() {
-      this.$router.push("./add");
+      this.$router.push("./add2");
     },
     search() {
       let form = {
