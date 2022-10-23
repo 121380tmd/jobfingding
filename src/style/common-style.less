@@ -1,0 +1,57 @@
+#app {
+  //font-family: PingFang SC;
+  font-size: 14px;
+  font-weight: 400;
+  --primary-color: @primary-color;
+}
+// 以 gb- 开头代表全局样式
+
+// 布局
+.gb-flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.gb-flex-between{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.gb-flex-start{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.gb-flex-end{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.gb-text-overflow {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap
+}
+
+.gb-text-line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.gb-text-line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.gb-scroll-bar-beauty {
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .2);
+  }
+}
