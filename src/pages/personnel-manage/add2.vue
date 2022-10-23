@@ -89,7 +89,7 @@ export default {
               // console.log(res);
               if (res.code === 200) {
                 message.success("添加成功");
-                this.$router.push("./main");
+                this.$router.push("./main2");
               }
             })
             .catch((err) => {
