@@ -12,50 +12,31 @@
 <template>
   <div class="main">
     <div class="form-box">
-      <el-form
-        :model="ruleForm"
-        :rules="rules"
-        ref="ruleForm"
-        label-width="100px"
-        class="demo-ruleForm"
-        label-position="left"
-        :hide-required-asterisk="false"
-      >
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
+        label-position="left" :hide-required-asterisk="false">
         <div class="box-1">
           <el-form-item label="职业分类" prop="region">
             <el-select v-model="ruleForm.region" placeholder="请选择职业分类">
-              <el-option
-                :label="item.name"
-                :value="item.id"
-                v-for="(item, index) in jobList"
-                :key="index"
-              ></el-option>
+              <el-option :label="item.name" :value="item.id" v-for="(item, index) in jobList" :key="index"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="职业名称" prop="name">
             <el-input v-model="ruleForm.name"></el-input>
           </el-form-item>
           <el-form-item label="职业描述" prop="textarea">
-            <el-input
-              type="textarea"
-              placeholder="请输入内容"
-              v-model="ruleForm.textarea"
-              maxlength="30"
-              show-word-limit
-            >
+            <el-input type="textarea" placeholder="请输入内容" v-model="ruleForm.textarea" maxlength="30" show-word-limit>
             </el-input>
           </el-form-item>
         </div>
         <div class="box-2">
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')"
-              >立即创建</el-button
-            >
+            <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
           </el-form-item>
         </div>
       </el-form>
     </div>
+    <el-button plain class="back" @click="back()">返回</el-button>
   </div>
 </template>
       
@@ -80,10 +61,12 @@ export default {
         ],
         name: [
           { required: true, message: "请输入职业名称", trigger: "blur" },
+          { pattern: /[\u4e00-\u9fa5]/, message: "请输入正确的职业名称", trigger: "blur" },
           { min: 2, max: 8, message: "长度在 2 到 8 个字符", trigger: "blur" },
         ],
         textarea: [
           { required: true, message: "请输入职业描述", trigger: "blur" },
+          { pattern: /[a-zA-Z\u4e00-\u9fa5]/, message: "请输入正确的职业描述", trigger: "blur" },
           {
             min: 1,
             max: 30,
@@ -134,6 +117,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    back() {
+      this.$router.push({
+        path: "./main",
+      });
+    }
   },
   mounted() {
     let form = {
@@ -162,6 +150,7 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   border-radius: 1%;
+  position: relative;
 
   .form-box {
     width: 80%;
@@ -170,6 +159,7 @@ export default {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+
     .box-1 {
       width: 100%;
       height: 50%;
@@ -177,17 +167,21 @@ export default {
       //   justify-content: center;
       flex-wrap: wrap;
       align-items: flex-end;
+
       .el-form-item {
         width: 100%;
       }
+
       .el-input {
         width: 30%;
       }
+
       .el-textarea {
         width: 40%;
         // min-height: 100px;
       }
     }
+
     .box-2 {
       width: 100%;
       height: 50%;
@@ -205,6 +199,13 @@ export default {
       }
     }
   }
+}
+
+.back {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  // border: 1px red solid;
 }
 </style>
       

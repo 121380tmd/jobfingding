@@ -15,25 +15,17 @@
   <div class="fill" v-else>
     <div class="header">
       <div class="box-1">
-        <el-button type="info" @click="recycleMany()">批量回收</el-button>
+        <el-button type="info" @click="recycleMany()" :disabled="showdata">批量回收</el-button>
       </div>
       <div class="box-2">
-        <el-input placeholder="请输入内容" v-model="searchIpt" clearable>
+        <el-input placeholder="请输入姓名/电话/身份证号" v-model="searchIpt" clearable>
         </el-input>
-        <el-button type="primary" icon="el-icon-search" @click="search()"
-          >搜索</el-button
-        >
+        <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
       </div>
     </div>
     <div class="table">
-      <el-table
-        ref="multipleTable"
-        :data="dataList"
-        tooltip-effect="dark"
-        style="width: 100%"
-        :border="true"
-        @selection-change="handleSelectionChange"
-      >
+      <el-table ref="multipleTable" :data="dataList" tooltip-effect="dark" style="width: 100%" :border="true"
+        @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"> </el-table-column>
         <!-- <el-table-column label="ID" width="120">
                     <template slot-scope="scope">{{ scope.row.id }}</template>
@@ -42,7 +34,7 @@
         <el-table-column prop="age" label="年龄" width="80"> </el-table-column>
         <el-table-column prop="sex" label="性别" width="80">
           <template slot-scope="scope">{{
-            scope.row.sex == "MAN" ? "男" : "女"
+              scope.row.sex == "MAN" ? "男" : "女"
           }}</template>
         </el-table-column>
         <el-table-column prop="phone" label="电话" width="120">
@@ -59,15 +51,9 @@
         <el-table-column prop="create_time" label="创建时间" width="180">
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[1, 5, 10, 15]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="dataTotal"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+        :page-sizes="[1, 5, 10, 15]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+        :total="dataTotal">
       </el-pagination>
     </div>
   </div>
@@ -92,6 +78,7 @@ export default {
       dataTotal: 0,
       dataList: [],
       errCode: "",
+      show:true
     };
   },
   methods: {
@@ -158,7 +145,7 @@ export default {
         pageSize: this.pageSize, //五条数据
         search: this.searchIpt.trim(),
       };
-      api.searchFillByKey(form).then((res) => {
+      api.searchByKeyRe(form).then((res) => {
         console.log(res);
         console.log(res.data);
         this.dataTotal = parseInt(res.data.total);
@@ -192,7 +179,7 @@ export default {
         },
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onCancel() {},
+        onCancel() { },
       });
     },
     handleEdit(index, row) {
@@ -217,6 +204,17 @@ export default {
 
     // })
   },
+  computed: {
+    showdata() {
+      if (this.multipleSelection == "") {
+        this.show = true
+      } else {
+        this.show = false
+      }
+      return this.show
+    }
+
+  }
 };
 </script>
       

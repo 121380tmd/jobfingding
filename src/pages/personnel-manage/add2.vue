@@ -12,15 +12,8 @@
 <template>
   <div class="main">
     <div class="form-box">
-      <el-form
-        :model="ruleForm"
-        :rules="rules"
-        ref="ruleForm"
-        label-width="100px"
-        class="demo-ruleForm"
-        label-position="left"
-        :hide-required-asterisk="false"
-      >
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
+        label-position="left" :hide-required-asterisk="false">
         <div class="box-1">
           <el-form-item label="分类名称" prop="name">
             <el-input v-model="ruleForm.name"></el-input>
@@ -28,14 +21,13 @@
         </div>
         <div class="box-2">
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')"
-              >立即创建</el-button
-            >
+            <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
           </el-form-item>
         </div>
       </el-form>
     </div>
+    <el-button plain class="back" @click="back()">返回</el-button>
   </div>
 </template>
       
@@ -58,6 +50,7 @@ export default {
         region: [{ required: true, message: "请选择分类", trigger: "change" }],
         name: [
           { required: true, message: "请输分类名称", trigger: "blur" },
+          { pattern: /[\u4e00-\u9fa5]/, message: "请输入正确的分类名称", trigger: "blur" },
           { min: 2, max: 8, message: "长度在 2 到 8 个字符", trigger: "blur" },
         ],
         textarea: [
@@ -109,6 +102,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    back() {
+      this.$router.push({
+        path: "./main2",
+      });
+    }
   },
   mounted() {
     let form = {
@@ -124,6 +122,7 @@ export default {
     // this.userObj = Obj.value
     // console.log(this.userObj.phone)
   },
+
 };
 </script>
       
@@ -137,6 +136,7 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   border-radius: 1%;
+  position: relative;
 
   .form-box {
     width: 80%;
@@ -145,30 +145,35 @@ export default {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+
     .box-1 {
       width: 100%;
       height: 50%;
       display: flex;
       //   justify-content: center;
       flex-wrap: wrap;
-      align-items: flex-end;
+      align-items: center;
+
       .el-form-item {
         width: 100%;
       }
+
       .el-input {
         width: 30%;
       }
+
       .el-textarea {
         width: 40%;
         // min-height: 100px;
       }
     }
+
     .box-2 {
       width: 100%;
       height: 50%;
       display: flex;
       justify-content: space-evenly;
-      align-items: center;
+      align-items: flex-start;
     }
 
     // align-items: center;
@@ -180,6 +185,13 @@ export default {
       }
     }
   }
+}
+
+.back {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  // border: 1px red solid;
 }
 </style>
       

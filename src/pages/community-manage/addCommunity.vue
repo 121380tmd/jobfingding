@@ -17,79 +17,46 @@
     <div class="header">
       <div class="box-1">
         <div class="input-box">
-          <el-input placeholder="请输入内容" v-model="searchIpt" clearable>
+          <el-input placeholder="请输入社区名称" v-model="searchIpt" clearable>
           </el-input>
         </div>
         <el-button @click="search()">查询</el-button>
-        <el-button
-          style="
+        <el-button style="
             background: rgb(22, 179, 163);
             color: white;
             border: 1px rgb(22, 179, 163) solid;
-          "
-          @click="add()"
-          >新增</el-button
-        >
-        <el-button
-          style="
+          " @click="add()">新增</el-button>
+        <el-button style="
             background: rgb(251, 183, 183);
             color: white;
             border: 1px rgb(251, 183, 183) solid;
-          "
-          @click="delMany()"
-          >批量删除
+          " @click="delMany()" :disabled="showdata">批量删除
+
         </el-button>
       </div>
       <div class="box-2"></div>
     </div>
     <div class="table">
       <!-- tempTableData -->
-      <el-table
-        ref="multipleTable"
-        :data="dataList"
-        tooltip-effect="dark"
-        style="width: 100%"
-        stripe
-        :border="true"
-        @selection-change="handleSelectionChange"
-      >
+      <el-table ref="multipleTable" :data="dataList" tooltip-effect="dark" style="width: 100%" stripe :border="true"
+        @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"> </el-table-column>
         <el-table-column label="ID" width="120">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
         <el-table-column prop="name" label="社区名称" width="200">
         </el-table-column>
-        <el-table-column
-          prop="create_time"
-          label="创建时间"
-          show-overflow-tooltip
-        >
+        <el-table-column prop="create_time" label="创建时间" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column
-          prop="admin_phone"
-          label="管理员电话"
-          show-overflow-tooltip
-        >
+        <el-table-column prop="admin_phone" label="管理员电话" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column
-          prop="admin_name"
-          label="管理员名称"
-          show-overflow-tooltip
-        >
+        <el-table-column prop="admin_name" label="管理员名称" show-overflow-tooltip>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleEdit(scope.$index, scope.row)"
-              >编辑
+            <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑
             </el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
@@ -98,17 +65,12 @@
                 <el-table-column prop="address" label="操作" show-overflow-tooltip>
                 </el-table-column> -->
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[1, 5, 10, 15]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="dataTotal"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+        :page-sizes="[1, 5, 10, 15]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+        :total="dataTotal">
       </el-pagination>
     </div>
+
   </div>
 </template>
   
@@ -131,6 +93,7 @@ export default {
       dataTotal: 0,
       dataList: [],
       errCode: "",
+      show: true
     };
   },
   methods: {
@@ -219,7 +182,7 @@ export default {
         },
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onCancel() {},
+        onCancel() { },
       });
       // console.log(index, row);
       // console.log('del');
@@ -273,7 +236,7 @@ export default {
         },
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onCancel() {},
+        onCancel() { },
       });
     },
     search() {
@@ -298,6 +261,17 @@ export default {
 
     // this.getgetDataList()
   },
+  computed: {
+    showdata() {
+      if (this.multipleSelection == "") {
+        this.show = true
+      } else {
+        this.show = false
+      }
+      return this.show
+    }
+
+  }
 };
 </script>
   

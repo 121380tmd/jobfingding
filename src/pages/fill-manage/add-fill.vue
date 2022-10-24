@@ -16,29 +16,17 @@
   <div class="fill" v-else>
     <div class="header">
       <div class="box-1">
-        <el-button type="danger" @click="delMany()">批量删除</el-button>
+        <el-button type="danger" @click="delMany()" :disabled="showdata">批量删除</el-button>
       </div>
       <div class="box-2">
-        <el-input
-          placeholder="根据姓名/电话/身份证号搜索"
-          v-model="searchIpt"
-          clearable
-        >
+        <el-input placeholder="根据姓名/电话/身份证号搜索" v-model="searchIpt" clearable>
         </el-input>
-        <el-button type="primary" icon="el-icon-search" @click="search()"
-          >搜索</el-button
-        >
+        <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
       </div>
     </div>
     <div class="table">
-      <el-table
-        ref="multipleTable"
-        :data="dataList"
-        tooltip-effect="dark"
-        style="width: 100%"
-        :border="true"
-        @selection-change="handleSelectionChange"
-      >
+      <el-table ref="multipleTable" :data="dataList" tooltip-effect="dark" style="width: 100%" :border="true"
+        @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"> </el-table-column>
         <!-- <el-table-column label="ID" width="120">
                     <template slot-scope="scope">{{ scope.row.id }}</template>
@@ -47,7 +35,7 @@
         <el-table-column prop="age" label="年龄" width="80"> </el-table-column>
         <el-table-column prop="sex" label="性别" width="80">
           <template slot-scope="scope">{{
-            scope.row.sex == "MAN" ? "男" : "女"
+              scope.row.sex == "MAN" ? "男" : "女"
           }}</template>
         </el-table-column>
         <el-table-column prop="phone" label="电话" width="120">
@@ -65,24 +53,14 @@
         </el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="warning"
-              @click="handleEdit(scope.$index, scope.row)"
-              >修改
+            <el-button size="mini" type="warning" @click="handleEdit(scope.$index, scope.row)">修改
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[1, 5, 10, 15]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="dataTotal"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+        :page-sizes="[1, 5, 10, 15]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+        :total="dataTotal">
       </el-pagination>
     </div>
   </div>
@@ -106,6 +84,8 @@ export default {
       dataTotal: 0,
       dataList: [],
       errCode: "",
+      show: true,
+      
     };
   },
   methods: {
@@ -207,7 +187,7 @@ export default {
         },
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onCancel() {},
+        onCancel() { },
       });
       //   api.delForm(form).then((res) => {
       //     console.log(res);
@@ -235,6 +215,17 @@ export default {
 
     // })
   },
+  computed: {
+    showdata() {
+      if (this.multipleSelection == "") {
+        this.show = true
+      } else {
+        this.show = false
+      }
+      return this.show
+    }
+
+  }
 };
 </script>
       
@@ -247,6 +238,7 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   border-radius: 1%;
+  // position: relative;
 }
 
 .header {

@@ -37,21 +37,9 @@
           <van-step icon="el-icon-edit">完成</van-step>
         </van-steps> -->
         <el-steps :active="active" align-center>
-          <el-step
-            title="01"
-            description="选择社区信息"
-            icon="el-icon-s-order"
-          ></el-step>
-          <el-step
-            title="02"
-            description="填写表单资料"
-            icon="el-icon-s-custom"
-          ></el-step>
-          <el-step
-            title="03"
-            description="完成"
-            icon="el-icon-success"
-          ></el-step>
+          <el-step title="01" description="选择社区信息" icon="el-icon-s-order"></el-step>
+          <el-step title="02" description="填写表单资料" icon="el-icon-s-custom"></el-step>
+          <el-step title="03" description="完成" icon="el-icon-success"></el-step>
         </el-steps>
       </div>
       <div class="uerInf-box" v-if="active == 1">
@@ -67,24 +55,13 @@
                 <div class="box" @click="ok">确认</div>
               </div>
             </template>
-            <van-picker
-              :columns="columns"
-              @confirm="onConfirm"
-              @cancel="onCancel"
-              @change="onChange"
-            />
+            <van-picker :columns="columns" @confirm="onConfirm" @cancel="onCancel" @change="onChange" />
           </van-action-sheet>
         </div>
       </div>
       <div class="uerInf-box" v-if="active == 2">
-        <el-form
-          :model="ruleForm"
-          :rules="rules"
-          ref="ruleForm"
-          label-width="100px"
-          class="demo-ruleForm"
-          label-position="left"
-        >
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
+          label-position="left">
           <el-form-item label="姓名" prop="name">
             <el-input v-model="ruleForm.name" maxlength="4"></el-input>
           </el-form-item>
@@ -107,10 +84,7 @@
             <el-input v-model="ruleForm.adress"></el-input>
           </el-form-item>
           <el-form-item label="学历信息" prop="education">
-            <el-select
-              v-model="ruleForm.education"
-              placeholder="请选择您的学历"
-            >
+            <el-select v-model="ruleForm.education" placeholder="请选择您的学历">
               <el-option label="小学" value="小学"></el-option>
               <el-option label="初中" value="初中"></el-option>
               <el-option label="高中" value="高中"></el-option>
@@ -122,22 +96,11 @@
             </el-select>
           </el-form-item>
           <el-form-item label="求职意向" prop="cascaderValue">
-            <van-field
-              v-model="ruleForm.cascaderValue"
-              is-link
-              readonly
-              label=""
-              placeholder="请选择所在地区"
-              @click="pickShow()"
-            />
+            <van-field v-model="ruleForm.cascaderValue" is-link readonly label="" placeholder="请选择所在地区"
+              @click="pickShow()" />
             <van-popup v-model="isshow" round position="bottom">
-              <van-cascader
-                v-model="ruleForm.cascaderValue"
-                title="请选择所在地区"
-                :options="jobList"
-                @close="isshow = false"
-                @finish="onFinish"
-              />
+              <van-cascader v-model="ruleForm.cascaderValue" title="请选择所在地区" :options="jobList" @close="isshow = false"
+                @finish="onFinish" />
             </van-popup>
             <!-- {{ ruleForm.cascaderValue }} -->
             <!-- <el-select v-model="ruleForm.jobIntention" placeholder="请选择求职意向">
@@ -155,19 +118,10 @@
       </div>
     </div>
     <div class="btn-box">
-      <el-button
-        v-if="active == 1"
-        type="primary"
-        @click="next()"
-        :loading="isLoading"
-      >
+      <el-button v-if="active == 1" type="primary" @click="next()" :loading="isLoading">
         {{ isLoading == true ? "加载中" : "下一步" }}
       </el-button>
-      <el-button
-        v-if="active == 2"
-        type="primary"
-        @click="submitForm('ruleForm')"
-      >
+      <el-button v-if="active == 2" type="primary" @click="submitForm('ruleForm')">
         完成提交
       </el-button>
     </div>
@@ -179,6 +133,7 @@ import store from "@/store";
 import api from "@/api";
 import { Toast } from "vant";
 import data from "../../icons/svg-view";
+import { message } from "ant-design-vue";
 import { RedEnvelopeFill } from "@ant-design/icons/lib/dist";
 // import { getommunityInf } from '../../api/modules/all'
 export default {
@@ -201,6 +156,7 @@ export default {
       rules: {
         name: [
           { required: true, message: "请输入名称", trigger: "blur" },
+          { pattern: /[\u4e00-\u9fa5]/, message: "请输入正确的名称", trigger: "blur" },
           { min: 2, max: 5, message: "长度在 2 到 5 个字符", trigger: "blur" },
         ],
         Idnumber: [
@@ -210,15 +166,18 @@ export default {
         ],
         age: [
           { required: true, message: "请输入年龄", trigger: "blur" },
+          { pattern: /[0-9]/, message: "请输入正确的年龄", trigger: "blur" },
           { min: 1, max: 2, message: "年龄输入有误", trigger: "blur" },
         ],
         tel: [
           { required: true, message: "请输入电话", trigger: "blur" },
+          { pattern: /[0-9]/, message: "请输入正确的电话号码", trigger: "blur" },
           { min: 11, max: 11, message: "电话为11位字符", trigger: "blur" },
         ],
         sex: [{ required: true, message: "请选择性别", trigger: "change" }],
         adress: [
           { required: true, message: "请输入家庭住址", trigger: "blur" },
+          { pattern: /^[\u4E00-\u9FA5A-Za-z0-9]+$/, message: "请输入正确的家庭住址", trigger: "blur" },
           {
             min: 2,
             max: 18,
@@ -349,6 +308,10 @@ export default {
                 // this.tempcolumns = res.data
               })
               .catch((err) => {
+                if (err) {
+                  message.error(err.msg);
+                  // this.$refs[formName].resetFields();
+                }
                 // console.log(err);
               });
           } else {
@@ -515,18 +478,21 @@ header {
       font-size: 2rem;
       justify-content: center;
     }
-    :deep(.van-cell__title){
+
+    :deep(.van-cell__title) {
       // display: f;
       // border: 1px red solid;
       // position: absolute;
       margin-bottom: 50%;
     }
+
     // :deep(.van-cell>.van-cell--clickable) {
     //   width: 100%;
     //   height: 96%;
     //   border: 1px red solid;
     // }
   }
+
   .tishi {
     width: 100%;
     height: 2%;
@@ -535,6 +501,7 @@ header {
     color: red;
     text-align: center;
   }
+
   .tishi2 {
     width: 100%;
     height: 2%;

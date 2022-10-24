@@ -54,6 +54,7 @@ export default {
   },
   computed: {
     defaultSelectedKeys() {
+      console.log('123213',this.$route.name)
       return [this.$route.name]
     },
     defaultOpenKeys() {

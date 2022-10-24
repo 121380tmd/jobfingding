@@ -16,38 +16,22 @@
   <div class="fill" v-else>
     <div class="header">
       <div class="box-1">
-        <el-button
-          style="
+        <el-button style="
             background: rgb(22, 179, 163);
             color: white;
             border: 1px rgb(22, 179, 163) solid;
-          "
-          @click="add()"
-          >新增</el-button
-        >
-        <el-button type="danger" @click="delMany()">批量删除</el-button>
+          " @click="add()">新增</el-button>
+        <el-button type="danger" @click="delMany()" :disabled="showdata">批量删除</el-button>
       </div>
       <div class="box-2">
-        <el-input
-          placeholder="根据姓名/电话/身份证号搜索"
-          v-model="searchIpt"
-          clearable
-        >
+        <el-input placeholder="根据分类名称搜索" v-model="searchIpt" clearable>
         </el-input>
-        <el-button type="primary" icon="el-icon-search" @click="search()"
-          >搜索</el-button
-        >
+        <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
       </div>
     </div>
     <div class="table">
-      <el-table
-        ref="multipleTable"
-        :data="dataList"
-        tooltip-effect="dark"
-        style="width: 100%"
-        :border="true"
-        @selection-change="handleSelectionChange"
-      >
+      <el-table ref="multipleTable" :data="dataList" tooltip-effect="dark" style="width: 100%" :border="true"
+        @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"> </el-table-column>
         <!-- <el-table-column label="ID" width="120">
                     <template slot-scope="scope">{{ scope.row.id }}</template>
@@ -63,26 +47,17 @@
         <el-table-column prop="create_time" label="创建时间"> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="handleEdit(scope.$index, scope.row)"
-              >编辑
+            <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">编辑
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[1, 5, 10, 15]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="dataTotal"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+        :page-sizes="[1, 5, 10, 15]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+        :total="dataTotal">
       </el-pagination>
     </div>
+
   </div>
 </template>
 <script>
@@ -104,6 +79,7 @@ export default {
       dataTotal: 0,
       dataList: [],
       errCode: "",
+      show: true,
     };
   },
   methods: {
@@ -166,16 +142,22 @@ export default {
     },
     search() {
       let form = {
-        pageNum: this.currentPage, //第一页
-        pageSize: this.pageSize, //五条数据
-        search: this.searchIpt.trim(),
+        // pageNum: this.currentPage, //第一页
+        // pageSize: this.pageSize, //五条数据
+        search_key: this.searchIpt.trim(),
       };
-      api.searchFillByKey(form).then((res) => {
+      api.searJob(form).then((res) => {
         // console.log(res);
         // console.log(res.data);
-        this.dataTotal = parseInt(res.data.total);
-        // console.log("total", this.dataTotal);
-        this.dataList = res.data.list;
+        if (!res.data) {
+          this.dataList = [];
+          this.dataTotal = 0;
+        } else {
+          this.dataTotal = parseInt(res.data.total);
+          // console.log("total", this.dataTotal);
+          this.dataList = res.data.list;
+
+        }
       });
       // searchFillByKey
     },
@@ -204,7 +186,7 @@ export default {
         },
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onCancel() {},
+        onCancel() { },
       });
       //   api.delForm(form).then((res) => {
       //     console.log(res);
@@ -232,6 +214,17 @@ export default {
 
     // })
   },
+  computed: {
+    showdata() {
+      if (this.multipleSelection == "") {
+        this.show = true
+      } else {
+        this.show = false
+      }
+      return this.show
+    }
+
+  }
 };
 </script>
       

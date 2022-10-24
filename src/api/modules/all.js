@@ -119,6 +119,12 @@ export default {
     method: METHOD.GET,
     url: "/api/manager/form/getLessFormList"
   },
+  //查询表单信息[回收箱
+  searchByKeyRe: {
+    method: METHOD.GET,
+    url: "/api/manager/form/searchByKeyRe"
+  },
+  
   //添加职业信息
   addJob: {
     method: METHOD.POST,
@@ -168,6 +174,11 @@ export default {
   modifyPassWord: {
     method: METHOD.POST,
     url: "/api/manager/user/modifyPassWord"
+  },
+  //搜索职业
+  searJob: {
+    method: METHOD.GET,
+    url: "/api/manager/job/searJob"
   },
 
 

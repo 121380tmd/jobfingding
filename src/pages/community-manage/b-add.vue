@@ -12,14 +12,8 @@
 <template>
   <div class="main">
     <div class="form-box">
-      <el-form
-        :model="ruleForm"
-        :rules="rules"
-        ref="ruleForm"
-        label-width="100px"
-        class="demo-ruleForm"
-        label-position="left"
-      >
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm"
+        label-position="left">
         <el-form-item label="社区名称" prop="name">
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
@@ -36,13 +30,12 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
-            >立即创建</el-button
-          >
+          <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
+    <el-button plain class="back" @click="back()">返回</el-button>
   </div>
 </template>
       
@@ -63,10 +56,12 @@ export default {
       rules: {
         name: [
           { required: true, message: "请输入社区名称", trigger: "blur" },
+          { pattern: /[a-zA-Z\u4e00-\u9fa5]/, message: "请输入正确的社区名称", trigger: "blur" },
           { min: 3, max: 8, message: "长度在 3 到 8 个字符", trigger: "blur" },
         ],
         admin_name: [
           { required: true, message: "请输入管理员名称", trigger: "blur" },
+          { pattern: /[\u4e00-\u9fa5]+/g, message: "请输入正确的名称", trigger: "blur" },
           { min: 2, max: 4, message: "长度在 2 到 4 个字符", trigger: "blur" },
         ],
         phone: [
@@ -102,17 +97,22 @@ export default {
               if (res.code === 200) {
                 this.$router.push("./addCommunity");
               }
+              console.log('res',res)
             })
             .catch((err) => {
               // this.$message.success("取消成功!");
-            //   console.log(err);
-              if (err.code == 500) {
+                // console.log('err',err);
+              if (err) {
                 message.error(err.msg);
                 this.$refs[formName].resetFields();
               }
+              // if (err.code == 4161) {
+              //   message.error(err.msg);
+              //   this.$refs[formName].resetFields();
+              // }
             });
         } else {
-        //   console.log("error submit!!");
+          //   console.log("error submit!!");
           return false;
         }
       });
@@ -120,6 +120,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    back() {
+      this.$router.push({
+        path: "./addCommunity",
+      });
+    }
   },
   mounted() {
     // let Obj = JSON.parse(localStorage.getItem('DEV_LOCAL_STORAGE_USER_INFO'));
@@ -139,6 +144,7 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   border-radius: 1%;
+  position: relative;
 
   .form-box {
     width: 80%;
@@ -156,6 +162,13 @@ export default {
       }
     }
   }
+}
+
+.back {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  // border: 1px red solid;
 }
 </style>
       

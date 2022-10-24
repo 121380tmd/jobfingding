@@ -118,7 +118,7 @@ export default {
           { min: 1, max: 7, message: "长度在 1 到 7 个字符", trigger: "blur" },
         ],
         age: [
-          { required: true, message: "请输入年龄", trigger: "blur" },
+          { required: true, message: "请输入年龄", trigger: "blur" }, 
           { min: 1, max: 2, message: "长度在 1 到 2 个字符", trigger: "blur" },
         ],
         phone: [

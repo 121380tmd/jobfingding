@@ -12,24 +12,17 @@
 <template>
   <div class="main">
     <div class="form-box">
-      <el-form
-        :model="ruleForm"
-        :rules="rules"
-        ref="ruleForm"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="社区名称" prop="name">
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
-            >立即修改</el-button
-          >
+          <el-button type="primary" @click="submitForm('ruleForm')">立即修改</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
+    <el-button plain class="back" @click="back()">返回</el-button>
   </div>
 </template>
       
@@ -65,20 +58,20 @@ export default {
           api
             .modifyCommunity(form)
             .then((res) => {
-            //   console.log(res);
+              //   console.log(res);
               if (res.code === 200) {
                 this.$router.push("./addCommunity");
               }
             })
             .catch((err) => {
               // this.$message.success("取消成功!");
-            //   console.log(err);
+              //   console.log(err);
               if (err.code == 500) {
                 message.error(err.msg);
               }
             });
         } else {
-        //   console.log("error submit!!");
+          //   console.log("error submit!!");
           return false;
         }
       });
@@ -86,6 +79,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    back() {
+      this.$router.push({
+        path: "./addCommunity",
+      });
+    }
   },
   mounted() {
     // let Obj = JSON.parse(localStorage.getItem('DEV_LOCAL_STORAGE_USER_INFO'));
@@ -108,6 +106,7 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   border-radius: 1%;
+  position: relative;
 
   .form-box {
     width: 80%;
@@ -123,6 +122,13 @@ export default {
 
     // background: #000;
   }
+}
+
+.back {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  // border: 1px red solid;
 }
 </style>
       

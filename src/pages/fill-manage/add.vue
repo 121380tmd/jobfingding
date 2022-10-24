@@ -1,6 +1,6 @@
 <route>
     {
-          "name": "添加社区",
+          "name": "添加",
           "meta": {
             "requiresAuth": false,
             "invisible": false,
@@ -61,7 +61,7 @@
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
         </el-form>
-
+        <el-button plain class="back" @click="back()">返回</el-button>
     </div>
 </template>
       
@@ -129,6 +129,11 @@ export default {
     },
     mounted() {
 
+    },
+    back() {
+        this.$router.push({
+            path: "./add-fill",
+        });
     }
 }
 </script>
@@ -142,6 +147,14 @@ export default {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    position: relative;
+}
+
+.back {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    // border: 1px red solid;
 }
 </style>
       

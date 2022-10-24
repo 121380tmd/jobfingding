@@ -12,34 +12,21 @@
 <template>
   <div class="main">
     <div class="form-box">
-      <el-form
-        :model="ruleForm"
-        :rules="rules"
-        ref="ruleForm"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="职业名称" prop="name">
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
         <el-form-item label="职业描述" prop="textarea">
-          <el-input
-            type="textarea"
-            placeholder="请输入内容"
-            v-model="ruleForm.textarea"
-            maxlength="30"
-            show-word-limit
-          >
+          <el-input type="textarea" placeholder="请输入内容" v-model="ruleForm.textarea" maxlength="30" show-word-limit>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
-            >立即修改</el-button
-          >
+          <el-button type="primary" @click="submitForm('ruleForm')">立即修改</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
+    <el-button plain class="back" @click="back()">返回</el-button>
   </div>
 </template>
       
@@ -58,10 +45,12 @@ export default {
       rules: {
         name: [
           { required: true, message: "请输入职业名称", trigger: "blur" },
+          { pattern: /[\u4e00-\u9fa5]/, message: "请输入正确的职业名称", trigger: "blur" },
           { min: 1, max: 7, message: "长度在 1 到 7 个字符", trigger: "blur" },
         ],
         textarea: [
           { required: false, message: "请输入职业描述", trigger: "blur" },
+          { pattern: /[a-zA-Z\u4e00-\u9fa5]/, message: "请输入正确的职业描述", trigger: "blur" },
           { min: 0, max: 30, message: "长度在 1 到 30 个字符", trigger: "blur" },
         ],
       },
@@ -103,14 +92,20 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    back() {
+      this.$router.push({
+        path: "./main",
+      });
+    }
   },
   mounted() {
     // let Obj = JSON.parse(localStorage.getItem('DEV_LOCAL_STORAGE_USER_INFO'));
     // this.userObj = Obj.value
     // console.log(this.userObj.phone)
     this.data = this.$route.query;
-    // console.log(this.data);
+    console.log(this.data);
     this.ruleForm.name = this.data.name;
+    this.ruleForm.textarea = this.data.descript
   },
 };
 </script>
@@ -125,6 +120,7 @@ export default {
   align-items: center;
   flex-wrap: wrap;
   border-radius: 1%;
+  position: relative;
 
   .form-box {
     width: 80%;
@@ -140,6 +136,13 @@ export default {
 
     // background: #000;
   }
+}
+
+.back {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  // border: 1px red solid;
 }
 </style>
       

@@ -16,13 +16,13 @@
   <div class="fill" v-else>
     <div class="header">
       <div class="box-1">
-        <el-button type="primary" @click="add">添加</el-button>
-        <el-button>批量标记</el-button>
+        <!-- <el-button type="primary" @click="add">添加</el-button>
+        <el-button>批量标记</el-button> -->
       </div>
       <div class="box-2">
-        <el-input placeholder="请输入内容" v-model="searchIpt" clearable>
+        <!-- <el-input placeholder="请输入内容" v-model="searchIpt" clearable>
         </el-input>
-        <el-button type="primary" icon="el-icon-search">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search">搜索</el-button> -->
       </div>
     </div>
     <div class="table">
@@ -91,7 +91,6 @@
         v-model:visible="visible"
         title="重置密码"
         @ok="handleOk"
-        centered="true"
       >
         <p>您确定要重置密码吗？</p>
         <p style="font-size: 0.4rem; color: red">密码为手机号后六位</p>
